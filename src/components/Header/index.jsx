@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 const Header = () => {
-  const cartValue = useSelector((state) => state.cartSlice);
+  const cartValue = useSelector((state) => state);
   console.log({cartValue})
   return (
     <div className="bg-gray-800 p-4">
@@ -17,7 +17,7 @@ const Header = () => {
         <li>
           <Link to="/cart">
             <Button variant="outlined" className="text-white border-white hover:bg-white hover:text-gray-800 ">
-              Cart <sup>{cartValue}</sup>
+              Cart
             </Button>
           </Link>
         </li>

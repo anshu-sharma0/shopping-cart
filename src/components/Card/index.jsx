@@ -1,3 +1,4 @@
+// RecipeReviewCard.jsx
 import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -11,62 +12,84 @@ import ShareIcon from '@mui/icons-material/Share';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Button from '@mui/material/Button';
 import { useDispatch, useSelector } from 'react-redux';
-import { Add_To_Cart, Remove_From_Cart } from '../../store/slices/cart';
+import { Add_To_Cart, Remove_From_Cart, Toggle_Favourite } from '../../store/slices/cart';
 
 export default function RecipeReviewCard({ products }) {
-  
   const dispatch = useDispatch();
-  const itemCount = useSelector((state) => state.cartSlice);
-console.log({itemCount})
+  const cart = useSelector((state) => state.cartSlice);
 
-  const handleAddToCart = () => {
-    dispatch(Add_To_Cart());
+  const handleAddToCart = (product) => {
+    dispatch(Add_To_Cart(product));
   };
 
-  const handleRemoveFromCart = () => {
-    dispatch(Remove_From_Cart());
+  const handleRemoveFromCart = (product) => {
+    dispatch(Remove_From_Cart(product)); 
+  };
+
+  const handleToggleFavourite = (product) => {
+    dispatch(Toggle_Favourite(product));
   };
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
       {products.map((product) => {
-        console.log(product)
+        const cartItem = cart.find((item) => item.id === product.id);
+        const isProductInCart = !!cartItem;
+        const isFavorited = cartItem?.isFavorited || false;
+        
         return (
-        <Card key={product.id} sx={{ maxWidth: 345 }} className="card-item">
-          <CardHeader
-            action={
-              <IconButton aria-label="settings">
-                <MoreVertIcon />
+          <Card key={product.id} sx={{ maxWidth: 345 }} className="card-item">
+            <CardHeader
+              action={
+                <IconButton aria-label="settings">
+                  <MoreVertIcon />
+                </IconButton>
+              }
+              title={product?.title}
+            />
+            <CardMedia
+              component="img"
+              height="194"
+              image={product?.image}
+              alt={product?.title}
+            />
+            <CardContent>
+              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                {product?.description}
+              </Typography>
+              Rating: {product?.rating.rate} /5
+            </CardContent>
+
+            <CardActions disableSpacing>
+              <IconButton 
+                aria-label="add to favorites"
+                onClick={() => handleToggleFavourite(product)}
+              >
+                <FavoriteIcon 
+                  color={isFavorited ? "error" : "inherit"}
+                />
               </IconButton>
-            }
-            title={product?.title}
-            subheader="September 14, 2016"
-          />
-          <CardMedia
-            component="img"
-            height="194"
-            image={product?.image}
-            alt={product?.title}
-          />
-          <CardContent>
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              {product?.description}
-            </Typography>
-          </CardContent>
-          <CardActions disableSpacing>
-            <IconButton aria-label="add to favorites">
-              <FavoriteIcon />
-            </IconButton>
-            <IconButton aria-label="share">
-              <ShareIcon />
-            </IconButton>
-            <div className="flex w-full justify-end mr-4">
-              <Button variant="outlined" onClick={handleAddToCart}>Add to Cart {itemCount}</Button>
-            </div>
-          </CardActions>
-        </Card>
-      )})
-    }
+              <IconButton aria-label="share">
+                <ShareIcon />
+              </IconButton>
+              <div className="flex w-full justify-end mr-4">
+                {isProductInCart ? (
+                  <Button variant="outlined" onClick={() => handleRemoveFromCart(product)}>
+                    Remove from Cart
+                  </Button>
+                ) : (
+                  <Button variant="outlined" onClick={() => handleAddToCart(product)}>
+                    Add to Cart
+                  </Button>
+                )}
+              </div>
+            </CardActions>
+          </Card>
+        );
+      })}
+      <div className="cart-count">
+        <p>Items in Cart: {cart.length}</p>
+      </div>
     </div>
   );
 }
