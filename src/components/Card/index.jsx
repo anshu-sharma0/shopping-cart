@@ -1,4 +1,3 @@
-// RecipeReviewCard.jsx
 import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -23,11 +22,20 @@ export default function RecipeReviewCard({ products }) {
   };
 
   const handleRemoveFromCart = (product) => {
-    dispatch(Remove_From_Cart(product)); 
+    dispatch(Remove_From_Cart(product));
   };
 
   const handleToggleFavourite = (product) => {
     dispatch(Toggle_Favourite(product));
+  };
+
+  const [expanded, setExpanded] = React.useState({});
+
+  const handleDescriptionToggle = (id) => {
+    setExpanded((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
   };
 
   return (
@@ -36,7 +44,7 @@ export default function RecipeReviewCard({ products }) {
         const cartItem = cart.find((item) => item.id === product.id);
         const isProductInCart = !!cartItem;
         const isFavorited = cartItem?.isFavorited || false;
-        
+
         return (
           <Card key={product.id} sx={{ maxWidth: 345 }} className="card-item">
             <CardHeader
@@ -45,27 +53,46 @@ export default function RecipeReviewCard({ products }) {
                   <MoreVertIcon />
                 </IconButton>
               }
-              title={product?.title}
+              title={<span className="truncate">{product?.title}</span>}
+              sx={{
+                '.MuiCardHeader-title': {
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                },
+              }}
             />
             <CardMedia
               component="img"
-              height="194"
+              height="10"
+              className='h-96'
               image={product?.image}
               alt={product?.title}
             />
             <CardContent>
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+              <Typography
+                variant="body2"
+                sx={{
+                  color: 'text.secondary',
+                  overflow: 'hidden',
+                  display: '-webkit-box',
+                  WebkitBoxOrient: 'vertical',
+                  WebkitLineClamp: expanded[product.id] ? 'none' : 2,
+                  cursor: 'pointer'
+                }}
+                onClick={() => handleDescriptionToggle(product.id)}
+              >
                 {product?.description}
               </Typography>
               Rating: {product?.rating.rate} /5
             </CardContent>
 
             <CardActions disableSpacing>
-              <IconButton 
+              <IconButton
                 aria-label="add to favorites"
                 onClick={() => handleToggleFavourite(product)}
               >
-                <FavoriteIcon 
+                <FavoriteIcon
                   color={isFavorited ? "error" : "inherit"}
                 />
               </IconButton>

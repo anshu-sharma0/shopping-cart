@@ -1,4 +1,3 @@
-// cartSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = [];
@@ -8,7 +7,7 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     Add_To_Cart: (state, action) => {
-      const product = { ...action.payload, isFavorited: false }; // Add isFavorited property
+      const product = { ...action.payload, isFavorited: false };
       const productExists = state.some(item => item.id === product.id);
       if (!productExists) {
         state.push(product);
