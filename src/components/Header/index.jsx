@@ -13,7 +13,12 @@ const Header = () => {
         <Link to={"/"}>
           <li className="text-lg font-semibold uppercase">Home</li>
         </Link>
-        <li className="text-lg font-semibold uppercase">About</li>
+        <Link to={"/productListing"}>
+          <li className="text-lg font-semibold uppercase">Product Listing</li>
+        </Link>
+        <Link to={"/product/:productId"}>
+          <li className="text-lg font-semibold uppercase">Product Details</li>
+        </Link>
         <li>
           <Link to="/cart">
             <Button variant="outlined" className="text-white border-white hover:bg-white hover:text-gray-800 ">
