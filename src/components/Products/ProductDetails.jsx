@@ -3,6 +3,7 @@ import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 import { selectedProduct } from '../../redux/actions/product-action'
 import { useDispatch, useSelector } from 'react-redux';
+import Layout from '../../layout';
 
 const ProductDetails = () => {
 
