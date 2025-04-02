@@ -19,7 +19,7 @@ const Cart = () => {
       <div className="flex flex-col items-center bg-white shadow-lg rounded-lg overflow-hidden transition-transform transform hover:scale-105 duration-300" key={id}>
         <Link to={`/product/${id}`} className="w-full">
           <div className="w-full h-64 bg-gray-100 flex justify-center items-center p-4">
-            <img src={image} alt={title} className="object-contain max-h-full max-w-full" />
+            <img src={image} alt={title} className="object-contain max-h-full max-w-full" style={{mixBlendMode: 'multiply'}} />
           </div>
           <div className="p-4">
             <p className="text-sm text-gray-600 mt-1">{category}</p>

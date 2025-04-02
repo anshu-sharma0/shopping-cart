@@ -33,7 +33,7 @@ const ProductDetails = () => {
             <div className="flex justify-center items-center py-12 px-4 bg-gray-100 min-h-screen">
                 <div className="bg-white rounded-lg shadow-lg w-full max-w-3xl p-8 flex flex-col lg:flex-row">
                     <div className="lg:w-1/2 mb-6 lg:mb-0 flex justify-center">
-                        <img src={image} alt={title} className="object-contain max-h-96 rounded-lg shadow-md" />
+                        <img src={image} alt={title} className="object-contain max-h-96 rounded-lg shadow-md" style={{mixBlendMode: 'multiply'}} />
                     </div>
 
                     <div className="lg:w-1/2 flex flex-col justify-start ml-0 lg:ml-8">
