@@ -1,6 +1,24 @@
-import { createStore } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import rootReducer from "./reducers";
+import storage from "redux-persist/lib/storage";
+import persistReducer from "redux-persist/es/persistReducer";
+import persistStore from "redux-persist/es/persistStore";
 
-const store = createStore(rootReducer, {}, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+const persistConfig = {
+    key: "root",
+    storage,
+};
 
-export default store;
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+export const store = configureStore({
+    reducer: persistedReducer,
+    devTools: process.env.NODE_ENV !== "production",
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: {
+                ignoredActions: ["persist/PERSIST", "persist/REHYDRATE"],
+            },
+        }),
+});
+
+export const persistor = persistStore(store);
